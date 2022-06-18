@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>CBT Bot Test</title>
+  <link rel="shortcut icon" href="/static/produce/images/favicon.png" />
+  <link rel="stylesheet" href="/static/produce/css/botui.min.css" />
+  <link rel="stylesheet" href="/static/produce/css/botui-theme-default.css" />
+  <link href="/static/produce/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+  <link href="/static/produce/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+  <div class="text-center">
+    <h5>
+      <p>
+        <br />
+        {{ .filename }}
+      </p>
+    </h5>
+  </div>
+  <div class="botui-app-container" id="cbt-bot">
+    <bot-ui></bot-ui>
+  </div>
+  <div class="text-center">
+    <h5><p><br /><a href="/produce/log">查看日志</a>&emsp;&emsp;&emsp;&emsp;<a href="/produce/upload">重新上传</a>&emsp;&emsp;&emsp;&emsp;<a href="/produce/logout">重新登录</a></p></h5>
+  </div>
+
+  <script src="/static/produce/js/vue.min.js"></script>
+  <script src="/static/produce/js/botui.js"></script>
+  <script src="/static/produce/js/bot_{{ .bot_version }}.js"></script>
+  <script language="javascript">
+    init("{{ .url_chat_continue }}", "/produce/chat/post")
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+syntax = "v1"
+
+info(
+    title: "正念冥想分类"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+import "v0/public.api"
+
+type (
+    // 列表
+    PositiveMeditationCategoryListReq {
+        Paging
+    }
+    PositiveMeditationCategoryPageListResp {
+        Total int64                         `json:"total"`
+        Rows  []*PositiveMeditationCategory `json:"rows"`
+    }
+    PositiveMeditationCategory {
+        Id    int64  `json:"id,optional"`
+        Title string `json:"title"`
+        Icon  string `json:"icon"`
+        Sort  int64  `json:"sort,optional"`
+    }
+
+    // 编辑
+    PositiveMeditationCategoryEditReq {
+        PositiveMeditationCategory
+    }
+
+    // 删除
+    PositiveMeditationCategoryDelReq {
+        Id int64 `json:"id"`
+    }
+)
+
+// 已登录
+@server(
+    group: v0/admin
+    jwt: Auth
+    //middleware: CheckSign //验签中间件
+    prefix: admin/v0/positiveMeditationCategory
+)
+service gateway-api {
+    // 列表
+    @handler PositiveMeditationCategoryPageList
+    post /list (PositiveMeditationCategoryListReq) returns (PositiveMeditationCategoryPageListResp)
+
+    // 编辑
+    @handler PositiveMeditationCategoryEdit
+    post /edit (PositiveMeditationCategoryEditReq)
+
+    // 删除
+    @handler PositiveMeditationCategoryDel
+    post /del (PositiveMeditationCategoryDelReq)
+}

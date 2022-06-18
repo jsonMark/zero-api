@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:23 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CBT Bot Demo</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link href="/static/produce/images/favicon.png" rel="shortcut icon" />
+    <link href="/static/produce/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="/static/produce/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <script>if (window.top !== window.self) { window.top.location = window.location; }</script>
+</head>
+
+<body class="gray-bg">
+
+    <div class="text-left loginscreen animated fadeInDown">
+        <div>
+            <p></p>
+            <p>
+            {{ range $i, $v := . }}
+                {{if gt $v.Type 0}}
+                    <span><font color="red">&emsp;{{ $v.Text }}</font></span><br />
+                {{else}}
+                    <span>&emsp;{{ $v.Text }}</span><br />
+                {{end}}
+            {{ end }}
+            </p>
+            <p class="text-muted text-center"><a href="/produce">返回</a></p>
+        </div>
+    </div>
+
+</body>
+
+</html>

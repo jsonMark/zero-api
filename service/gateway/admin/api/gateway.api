@@ -1,0 +1,16 @@
+syntax = "v1"
+
+info(
+	title: "dcat-admin后台网关"
+	desc: "type desc here"
+	author: "type author here"
+	email: "type email here"
+	version: "type version here"
+)
+
+//用户模块
+//import "user/user.api"
+import "v0/admin.api"
+import "v0/positivemeditationcategory.api"
+import "v0/positivemeditationtag.api"
+import "v0/positivemeditation.api"

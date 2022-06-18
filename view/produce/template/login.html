@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CBT Bot Demo</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link href="/static/produce/images/favicon.png" rel="shortcut icon" />
+    <link href="/static/produce/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="/static/produce/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <h3>用户登录</h3>
+
+            <form class="m-t" role="form" id="formLogin" method="post" onsubmit="return false">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="用户名" id="username" required="" />
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="密码" id="password" required="" />
+                </div>
+                <button id="login_btn" class="btn btn-primary block full-width m-b" onclick="login()">登 录</button>
+
+                <p><a href="/produce/register">新用户注册</a></p>
+
+                <script language="javascript">
+                    function login() {
+                        var user = document.getElementById("username").value
+                        var pass = document.getElementById("password").value
+                        var post_data = {
+                            "username": user,
+                            "password": pass
+                        }
+
+                        document.getElementById("login_btn").innerHTML = "正在登录 ..."
+
+                        var xhr = new XMLHttpRequest()
+                        xhr.open("POST", "/produce/login", true)
+                        xhr.setRequestHeader("Content-type", "application/json")
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState == 4 && xhr.status == 200) {
+                                var data = JSON.parse(xhr.responseText)
+                                console.log(data)
+                                console.log(xhr.responseText)
+                                if(data.code == "200" && data.msg == "OK") {
+                                    window.location.replace("/produce/")
+                                }
+                            } else {
+                                var data = JSON.parse(xhr.responseText)
+                                console.log(data)
+                                console.log(xhr.responseText)
+                                window.location.replace("/produce/?error=login&code=" + data.code)
+                            }
+                        }
+                        xhr.send(JSON.stringify(post_data))
+                    }
+                </script>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CBT Bot Demo</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link href="/static/produce/images/favicon.png" rel="shortcut icon" />
+    <link href="/static/produce/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="/static/produce/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <h3>新用户注册</h3>
+
+            <form class="m-t" role="form" id="formRegister" method="post" onsubmit="return false">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="请输入用户名" id="username" required="" />
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="请输入密码" id="passwd1" required="" />
+                    <input type="password" class="form-control" placeholder="再次输入密码" id="passwd2" required="" />
+                </div>
+                <button id="register_btn" class="btn btn-primary block full-width m-b" onclick="register()">注 册</button>
+
+                <p class="text-muted text-center">
+                    <small>已经有账号了？</small>
+                    <a href="/produce">点此登录</a>
+                </p>
+
+                <script language="javascript">
+                    function register() {
+                        var user = document.getElementById("username").value
+                        var passwd1 = document.getElementById("passwd1").value
+                        var passwd2 = document.getElementById("passwd2").value
+                        var post_data = {
+                            "username": user,
+                            "passwd1": passwd1,
+                            "passwd2": passwd2
+                        }
+
+                        document.getElementById("register_btn").innerHTML = "正在注册 ..."
+
+                        var xhr = new XMLHttpRequest()
+                        xhr.open("POST", "/produce/register", true)
+                        xhr.setRequestHeader("Content-type", "application/json")
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState == 4 && xhr.status == 200) {
+                                var data = JSON.parse(xhr.responseText)
+                                console.log(data)
+                                console.log(xhr.responseText)
+                                if (data.code == 200) {
+                                    window.location.replace("/produce")
+                                }
+                            } else {
+                                var data = JSON.parse(xhr.responseText)
+                                console.log(data)
+                                console.log(xhr.responseText)
+                                window.location.replace("/produce/?error=register&code=" + data.code)
+                            }
+                        }
+                        xhr.send(JSON.stringify(post_data))
+                    }
+                </script>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

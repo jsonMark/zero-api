@@ -1,0 +1,73 @@
+syntax = "v1"
+
+info(
+    title: "正念冥想"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here1"
+)
+
+import "v0/public.api"
+
+type (
+    // 列表
+    PositiveMeditationListReq {
+        Paging
+        TagId       int64 `json:"tag_id,optional"`
+        IsRecommend int64 `json:"is_recommend,optional"`
+    }
+    PositiveMeditationPageListResp {
+        Total int64                 `json:"total"`
+        Rows  []*PositiveMeditation `json:"rows"`
+    }
+    PositiveMeditation {
+        Id           int64                    `json:"id,optional"`
+        Title        string                   `json:"title"`
+        PicUrl       string                   `json:"pic_url"`
+        ThumbnailUrl string                   `json:"thumbnail_url"`
+        ToppicUrl    string                   `json:"toppic_url"`
+        VideoUrl     string                   `json:"video_url"`
+        PlayTimes    int64                    `json:"play_times,optional"`
+        Duration     string                   `json:"duration,optional"`
+        Explain      string                   `json:"explain,optional"`
+        Sort         int64                    `json:"sort,optional"`
+        IsRecommend  int64                    `json:"is_recommend,optional"`
+        TagList      []*PositiveMeditationTag `json:"tag_list,optional"`
+    }
+
+    // 编辑
+    PositiveMeditationEditReq {
+        PositiveMeditation
+    }
+
+    // 删除
+    PositiveMeditationDelReq {
+        Id int64 `json:"id"`
+    }
+)
+
+// 已登录
+@server(
+    group: v0/admin
+    jwt: Auth
+    //middleware: CheckSign //验签中间件
+    prefix: admin/v0/positiveMeditation
+)
+service gateway-api {
+    // 列表
+    @handler PositiveMeditationPageList
+    post /list (PositiveMeditationListReq) returns (PositiveMeditationPageListResp)
+
+    // 编辑
+    @handler PositiveMeditationEdit
+    post /edit (PositiveMeditationEditReq)
+
+    // 删除
+    @handler PositiveMeditationDel
+    post /del (PositiveMeditationDelReq)
+
+    // TODO 修改数据
+    @handler ModifyData
+    post /modifyData
+}

@@ -1,0 +1,100 @@
+syntax = "v1"
+
+info(
+    title: "管理员相关接口"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type (
+    // 图片验证码
+    CaptchaReq {
+        Username string `form:"username"`
+    }
+    CaptchaResp {
+        Code string `json:"code"`
+    }
+    
+    // 登录
+    LoginReq {
+        Username string `json:"username"`  // 用户登录名称
+        Password string `json:"password"`  // 密码
+        Captcha  string `json:"captcha"`   // 图形验证码
+    }
+    LoginResp{
+        Id          int64  `json:"id,optional"`
+        Username    string `json:"username,optional"`
+        AccessToken string `json:"access_token,optional"`
+    }
+
+    // 七牛云token返回
+    GenerateTokenResp{
+        Domain        string `json:"domain,optional"`
+        QiniuAddr     string `json:"qiniuaddr,optional"`
+        UploadToken   string `json:"uploadToken,optional"`
+    }
+
+    // 七牛云文件列表请求
+    QiniuFileListReq {
+        Marker    string `json:"marker,optional"`
+        Limit     int    `json:"limit,optional"`
+        Prefix    string `json:"prefix,optional"`
+        Delimiter string `json:"delimiter,optional"`
+    }
+
+    // 七牛云文件列表返回
+    QiniuFileListResp {
+        Rows           []QiNiuFile `json:"rows"`
+        CommonPrefixes []string   `json:"commonPrefixes"`
+        NextMarker     string     `json:"nextMarker"`
+        HasNext        bool       `json:"hasNext"`
+    }
+
+    // 文件信息
+    QiNiuFile  {
+        Key      string `json:"key"`
+        Hash     string `json:"hash"`
+        Fsize    int64  `json:"fsize"`
+        PutTime  int64  `json:"putTime"`
+        MimeType string `json:"mimeType"`
+        Type     int    `json:"type"`
+        EndUser  string `json:"endUser"`
+    }
+)
+
+// 未登录
+@server (
+    group: v0/admin
+    prefix: admin/v0
+)
+service gateway-api {
+    // 获取验证码
+    @handler GetCaptcha
+    get /getcaptcha (CaptchaReq) returns (CaptchaResp)
+
+    // 登录
+    @handler Login
+    post /login (LoginReq) returns (LoginResp)
+}
+
+// 已登录
+@server(
+    group: v0/admin
+    jwt: Auth
+    //middleware: CheckSign //验签中间件
+    prefix: admin/v0
+)
+service gateway-api {
+    //退出登录
+    @handler Logout
+    get /logout
+
+    //后端获取七牛的token
+    @handler GenerateToken
+    post /generateToken returns (GenerateTokenResp)
+
+    @handler GetQiNiuFileList
+    post /getQiNiuFileList(QiniuFileListReq) returns (QiniuFileListResp)
+}

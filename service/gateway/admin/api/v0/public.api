@@ -1,0 +1,16 @@
+syntax = "v1"
+
+info(
+    title: "公共数据结构"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type (
+    Paging struct {
+        Page int64 `json:"page,optional"`
+        PageSize int64 `json:"page_size,optional"`
+    }
+)

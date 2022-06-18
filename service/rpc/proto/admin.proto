@@ -1,0 +1,126 @@
+syntax = "proto3";
+
+package admin;
+
+// protoc-gen-go 版本大于1.4.0, proto文件需要加上go_package,否则无法生成
+option go_package = "./admin_pb";
+
+// 登录
+message LoginReq {
+  string Username = 1;
+  string Password = 2;
+  string Captcha = 3;
+}
+
+message LoginResp {
+  int64 Id = 1;
+  string Username = 2;
+}
+
+// 正念冥想分类
+// 列表
+message PositiveMeditationCategoryListReq {
+  int64 Page = 1;
+  int64 PageSize = 2;
+}
+
+message PositiveMeditationCategoryPageListResp {
+  int64 Total = 1;
+  repeated PositiveMeditationCategory Rows = 2;
+}
+
+message PositiveMeditationCategory {
+  int64 Id = 1;
+  string Title = 2;
+  string Icon = 3;
+  int64 Sort = 4;
+}
+
+// 正念冥想标签
+// 列表
+message PositiveMeditationTagListReq {
+  int64 Page = 1;
+  int64 PageSize = 2;
+  int64 CategoryId = 3;
+  int64 IsRecommend = 4;
+}
+
+message PositiveMeditationTagPageListResp {
+  int64 Total = 1;
+  repeated PositiveMeditationTag Rows = 2;
+}
+
+message PositiveMeditationTag {
+  int64 Id = 1;
+  string Title = 2;
+  string PicUrl = 3;
+  string Explain = 4;
+  int64 Sort = 5;
+  int64 IsRecommend = 6;
+  string Icon = 7;
+  int64 CategoryId = 8;
+  string CategoryTitle = 9;
+}
+
+// 正念冥想
+// 列表
+message PositiveMeditationListReq {
+  int64 Page = 1;
+  int64 PageSize = 2;
+  int64 TagId = 3;
+  int64 IsRecommend = 4;
+}
+
+message PositiveMeditationPageListResp {
+  int64 Total = 1;
+  repeated PositiveMeditation Rows = 2;
+}
+
+message PositiveMeditation {
+  int64 Id = 1;
+  string Title = 2;
+  string PicUrl = 3;
+  string ThumbnailUrl = 4;
+  string ToppicUrl = 5;
+  string VideoUrl = 6;
+  int64 PlayTimes = 7;
+  string Duration = 8;
+  string Explain = 9;
+  int64 Sort = 10;
+  int64 IsRecommend = 11;
+  repeated PositiveMeditationTag TagList = 12;
+}
+
+// 退出登录
+//message LogOutReq {
+//    int64 Id = 4;
+//    string Username = 5;
+//    string Password = 6;
+//
+//}
+
+//message LogOutResp {
+//    int64 Id = 4;
+//}
+
+service Admin {
+  // 登录
+  rpc Login (LoginReq) returns (LoginResp);
+  // 退出登录
+  //  rpc LogOut(LogOutReq) returns(LogOutResp);
+
+  // 正念冥想分类
+  rpc PositiveMeditationCategoryPageList (PositiveMeditationCategoryListReq) returns (PositiveMeditationCategoryPageListResp);
+  rpc PositiveMeditationCategoryEdit (PositiveMeditationCategory) returns (PositiveMeditationCategory);
+  rpc PositiveMeditationCategoryDel (PositiveMeditationCategory) returns (PositiveMeditationCategory);
+
+  // 正念冥想标签
+  rpc PositiveMeditationTagPageList (PositiveMeditationTagListReq) returns (PositiveMeditationTagPageListResp);
+  rpc PositiveMeditationTagEdit (PositiveMeditationTag) returns (PositiveMeditationTag);
+  rpc PositiveMeditationTagDel (PositiveMeditationTag) returns (PositiveMeditationTag);
+
+  // 正念冥想
+  rpc PositiveMeditationPageList (PositiveMeditationListReq) returns (PositiveMeditationPageListResp);
+  rpc PositiveMeditationEdit (PositiveMeditation) returns (PositiveMeditation);
+  rpc PositiveMeditationDel (PositiveMeditation) returns (PositiveMeditation);
+}
